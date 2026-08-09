@@ -1,4 +1,3 @@
-import React from 'react';
 import { Sparkles } from 'lucide-react';
 
 export function Hero() {
@@ -12,10 +11,13 @@ export function Hero() {
           <p className="text-xl mb-8 text-amber-200">
             We create games that bring people together and spark joy through innovative gameplay and storytelling.
           </p>
-          <button className="bg-yellow-400 text-amber-900 px-8 py-3 rounded-full font-semibold flex items-center gap-2 mx-auto hover:bg-yellow-300 transition-colors duration-200">
+          <a
+            href="#games"
+            className="bg-yellow-400 text-amber-900 px-8 py-3 rounded-full font-semibold inline-flex items-center gap-2 hover:bg-yellow-300 transition-colors duration-200"
+          >
             <Sparkles className="w-5 h-5" />
             See Our Games
-          </button>
+          </a>
         </div>
       </div>
     </section>

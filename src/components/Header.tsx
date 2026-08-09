@@ -1,23 +1,20 @@
 import React from 'react';
-import { Gamepad2, Menu } from 'lucide-react';
+import { Gamepad2 } from 'lucide-react';
 
 export function Header() {
   return (
     <header className="bg-amber-900 text-amber-100">
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <nav className="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+        <a href="/" className="flex items-center gap-2">
           <Gamepad2 className="w-8 h-8 text-yellow-400" />
           <span className="text-2xl font-bold text-yellow-400">CutTheCheese</span>
-        </div>
-        <div className="hidden md:flex items-center gap-8">
+        </a>
+        <div className="flex items-center gap-6">
           <NavLink href="#games">Games</NavLink>
-          <NavLink href="#about">About</NavLink>
-          <NavLink href="#careers">Careers</NavLink>
+          <NavLink href="/sixseven/support">Support</NavLink>
+          <NavLink href="/sixseven/privacy">Privacy</NavLink>
           <NavLink href="#contact">Contact</NavLink>
         </div>
-        <button className="md:hidden">
-          <Menu className="w-6 h-6 text-yellow-400" />
-        </button>
       </nav>
     </header>
   );

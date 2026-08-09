@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/sixseven-support", "destination": "/sixseven/support", "permanent": false },
+    { "source": "/sixseven-support/privacy.html", "destination": "/sixseven/privacy", "permanent": false },
+    { "source": "/support", "destination": "/sixseven/support", "permanent": false },
+    { "source": "/privacy", "destination": "/sixseven/privacy", "permanent": false }
+  ]
+}

@@ -1,26 +1,16 @@
-import React from 'react';
 import { GameCard } from './GameCard';
 
 export function Games() {
   const games = [
     {
-      title: "Cheese Runner",
-      description: "An endless runner where you collect cheese while avoiding mousetraps.",
-      imageUrl: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&q=80&w=2070",
-      releaseDate: "Coming Soon"
+      title: 'SixSeven Tap Game',
+      description:
+        'Tap once to start the timer, tap again at exactly 6.7 seconds. Build a streak and climb the global leaderboard.',
+      mark: '6.7',
+      releaseDate: 'iOS — coming soon',
+      supportUrl: '/sixseven/support',
+      privacyUrl: '/sixseven/privacy',
     },
-    {
-      title: "Mouse Quest",
-      description: "A puzzle adventure game set in a world of cheese and mystery.",
-      imageUrl: "https://images.unsplash.com/photo-1452195100486-9cc805987862?auto=format&fit=crop&q=80&w=2069",
-      releaseDate: "Available Now"
-    },
-    {
-      title: "Cheese Factory Tycoon",
-      description: "Build and manage your own cheese empire in this simulation game.",
-      imageUrl: "https://images.unsplash.com/photo-1618164436241-4473940d1f5c?auto=format&fit=crop&q=80&w=2070",
-      releaseDate: "In Development"
-    }
   ];
 
   return (
