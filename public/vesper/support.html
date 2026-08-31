@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vesper — Support | CutTheCheese Games</title>
+    <meta name="description" content="Support for Vesper, a watchOS alarm clock with a small bat in it: how the alarm works, why it sometimes asks to be reopened, and what she needs permission for." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/vesper/page.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark">☾</span>
+        <span class="brand-name">CutTheCheese</span>
+      </a>
+      <nav class="site-nav">
+        <a href="/vesper/support">Support</a>
+        <a href="/vesper/privacy">Privacy</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Vesper — Support</h1>
+      <p class="lead">
+        Vesper is a small bat who lives on your wrist, keeps the opposite hours
+        to you, and has opinions about it. She is awake all night, and just
+        before she goes to sleep at dawn, she wakes you up.
+      </p>
+
+      <h2>Setting the alarm</h2>
+      <ul>
+        <li>Swipe to the <strong>Alarm</strong> screen and turn on <em>Wake me</em>.</li>
+        <li>Set a time, and optionally the days it should repeat. No days selected means every day.</li>
+        <li>When it goes off she flaps and shrieks, and the haptics get sharper the longer you ignore her.</li>
+        <li><strong>Snooze</strong> buys you a few minutes and she counts it. <strong>Up</strong> ends it and extends your streak.</li>
+      </ul>
+
+      <h2>Common questions</h2>
+      <dl>
+        <dt>Why does the alarm screen say "open me again before then"?</dt>
+        <dd>
+          watchOS only lets an app schedule an alarm up to 36 hours ahead, and
+          only while the app is open. If your next alarm is further away than
+          that — a Mondays-only alarm set on a Tuesday, say — Vesper cannot arm
+          it yet. Open the app any time within 36 hours of the alarm and she
+          arms it properly. A notification is scheduled as a backup either way.
+        </dd>
+
+        <dt>Why is it not as loud as the built-in alarm?</dt>
+        <dd>
+          Apple does not give third-party apps the system alarm. Vesper uses the
+          strongest mechanism that is available to it, the same one sleep
+          tracking apps use, but the built-in Alarms app has privileges no other
+          app can request.
+        </dd>
+
+        <dt>She has nothing to say about my activity.</dt>
+        <dd>
+          She needs Health permission. Go to <em>Settings</em> inside the app and
+          tap <em>Grant permissions</em>. Without it she still works, but she is
+          limited to remarks about the hour and your snoozing habits.
+        </dd>
+
+        <dt>Can I make her nicer, or worse?</dt>
+        <dd>
+          Yes. <em>Settings → Tone</em> has three levels. <strong>Gentle</strong>
+          is fond and worried about you. <strong>Melancholy</strong> is the
+          default. <strong>Bleak</strong> does not soften anything.
+        </dd>
+
+        <dt>Does she need my iPhone?</dt>
+        <dd>No. Vesper is a standalone watchOS app and runs entirely on the watch.</dd>
+
+        <dt>Where does my health data go?</dt>
+        <dd>
+          Nowhere. The app has no networking code at all. See the
+          <a href="/vesper/privacy">privacy policy</a>.
+        </dd>
+      </dl>
+
+      <h2>Contact</h2>
+      <p>
+        Anything else, or a bug worth telling us about:
+        <a href="mailto:support@cutthecheese.games">support@cutthecheese.games</a>.
+      </p>
+
+      <p class="footnote">
+        See also the <a href="/vesper/privacy">privacy policy</a>.
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 CutTheCheese Games. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
