@@ -1,0 +1,10 @@
+Save as raw/icons.png. Wide image, aspect 2:1. Grid: 4 columns x 2 rows (8 cells). Each cell is an app icon redrawn as tiny 8-bit pixel art (think 32x32 pixels, scaled up), each on its own rounded-square tile with an aubergine outline and a solid tile colour that suits the game. Keep each icon recognisable and simple.
+The attached images after the logo are the CURRENT icons of some of these games (in this order: Heat & Hammer, Vesper, How Far Can Pete Go?, PixelFight) — redraw them as pixel art, keeping their main subject and colours.
+Cell 1 (row1 col1) Six Seven Tap: a stopwatch showing big "6.7" digits, cheddar yellow tile.
+Cell 2 Heat & Hammer: redraw of its current icon (blacksmith hammer over a glowing anvil / forge, fiery orange).
+Cell 3 Vesper: redraw of its current icon (a small cute bat, night purple tile, a crescent moon).
+Cell 4 How Far Can Pete Go?: redraw of its current icon (Pete the plush man).
+Cell 5 (row2 col1) PixelFight: redraw of its current icon (pixel fighter / crossed swords).
+Cell 6 Tiny World: a tiny round planet with little roads, a car and a boat, blue and green, a "BONK!" star.
+Cell 7 Little Planet: a small green planet with a lighthouse and a tiny biplane circling it.
+Cell 8 Brush the Cat: an orange cat looking back over its shoulder suspiciously with a hairbrush.

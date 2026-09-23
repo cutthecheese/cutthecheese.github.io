@@ -1,0 +1,6 @@
+Save as raw/mouse.png. Square image. Grid: 4 columns x 4 rows (16 cells).
+Character: the mouse from the attached logo (grey body, big round ears with yellow/orange inner ear, black dot eyes, pink nose, white belly, thin curly dark tail), same design in every cell, full body side view facing right, holding a small kitchen knife (brown handle, light grey blade).
+Row 1: running cycle frames 1-4 (legs clearly alternating, body bobbing).
+Row 2: running cycle frames 5-6, then idle standing frame A, idle frame B (blinking, tapping foot).
+Row 3: jump (legs tucked, ears flying up), squashed flat as a pancake after being run over (very wide, very short, dizzy X eyes), waving hello with free hand, sitting and eating a small cheese wedge.
+Row 4: cutting-cheese animation 4 frames: knife raised high, knife coming down, knife hitting (small star burst), proud pose with knife up.

@@ -1,0 +1,5 @@
+Save as raw/props.png. Square image. Grid: 4 columns x 4 rows (16 cells).
+Row 1: a small shiny cheese crumb collectible (sparkle); a wooden signpost on a pole with an empty square board (crust brown wood, cream board); a street lamp (tall, dark); a fire hydrant (red).
+Row 2: a big round full moon that is a wheel of cheese with holes; a fluffy chunky white cloud; a small green bush; a round tree.
+Row 3: a mouse hole in a brick wall (arched dark hole, bricks around, cream wall); a speech bubble (empty, cream with outline, tail bottom-left); a yellow star burst "impact" shape; a tiny heart.
+Row 4: a speaker icon (on); the same speaker muted with an X; a small cheese wedge icon for a score counter; an arcade style pixel arrow pointing down.

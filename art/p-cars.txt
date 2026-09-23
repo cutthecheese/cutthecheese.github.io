@@ -1,0 +1,6 @@
+Save as raw/cars.png. Wide image, aspect 2:1. Grid: 2 columns x 4 rows (8 cells, each cell twice as wide as tall).
+Each row is one cute chunky cartoon vehicle, side view facing RIGHT, drawn twice (column 1 and column 2 differ only in the wheel spokes rotation and a 1-pixel body bob so they animate):
+Row 1: small red hatchback car with a mouse driver visible in the window.
+Row 2: yellow taxi with a checker stripe and a roof sign shaped like a cheese wedge.
+Row 3: cheese delivery truck: cab plus a box body painted like a big block of cheese with holes.
+Row 4: ice-cream van in cream and pink with a giant cheese-flavour cone on its roof.
