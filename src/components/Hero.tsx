@@ -1,24 +1,26 @@
-import { Sparkles } from 'lucide-react';
-
-export function Hero() {
+export function Hero({ count }: { count: number }) {
   return (
-    <section className="bg-gradient-to-b from-amber-900 to-amber-800 text-amber-100 py-20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="text-yellow-400">Crafting</span> Unforgettable Gaming Experiences
-          </h1>
-          <p className="text-xl mb-8 text-amber-200">
-            We create games that bring people together and spark joy through innovative gameplay and storytelling.
-          </p>
-          <a
-            href="#games"
-            className="bg-yellow-400 text-amber-900 px-8 py-3 rounded-full font-semibold inline-flex items-center gap-2 hover:bg-yellow-300 transition-colors duration-200"
-          >
-            <Sparkles className="w-5 h-5" />
-            See Our Games
-          </a>
-        </div>
+    <section id="top" className="hero">
+      <div className="hero-inner">
+        <img src="/sprites/logo.png" alt="" className="px hero-logo" />
+        <h1 className="wordmark">
+          <span className="wordmark-small">Cut the</span>
+          <span className="wordmark-big">Cheese</span>
+        </h1>
+        <p className="hero-lede px-box">
+          We’re a tiny game studio. There are {count} projects on this road, from a stopwatch game to a bat
+          who lives on your wrist.
+        </p>
+        <p className="hero-hint px-box">
+          <span className="hint-keys">
+            Scroll or hold A/D (←/→) to walk. W/S (↑/↓) switches lanes and Space jumps. Grab the crumbs and
+            dodge the cars.
+          </span>
+          <span className="hint-touch">
+            Scroll to walk. Tap the other lane to cross the road, or tap your own lane to jump.
+          </span>
+          <img src="/sprites/ui-arrow.png" alt="" className="px hero-arrow" />
+        </p>
       </div>
     </section>
   );

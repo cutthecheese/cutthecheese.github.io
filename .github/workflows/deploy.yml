@@ -1,0 +1,97 @@
+name: Deploy to Vercel
+
+# Production is https://cutthecheese.games. It is deployed from:
+#   - every push to main;
+#   - every ready (non-draft) pull request: when opened, on new commits, when reopened or marked ready.
+# Only one pull request may be open at a time. A second one fails the "One open PR" check and is never
+# deployed. Dependabot's pull requests don't count towards that and are not deployed either.
+#
+# The only secret is VERCEL_TOKEN: a project token, scoped to the cutthecheese-games project alone
+# (Vercel → Account Settings → Tokens → scope: project). The team and project IDs below are not secret.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  one-open-pr:
+    name: One open PR
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that no other pull request is open
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          others=$(gh pr list --repo "$REPO" --state open --limit 100 --json number,author \
+            --jq "[.[] | select((.author.is_bot | not) and .number != $PR) | \"#\(.number)\"] | join(\", \")")
+          if [ -n "$others" ]; then
+            echo "::error::Only one pull request may be open at a time; $others is already open."
+            gh pr comment "$PR" --repo "$REPO" --edit-last --create-if-none \
+              --body "⛔ Only one pull request may be open at a time, and $others is already open. Merge or close it first. This PR has not been deployed."
+            exit 1
+          fi
+          echo "No other open pull requests."
+
+  deploy:
+    name: Deploy to production
+    needs: one-open-pr
+    # `always()` lets pushes to main run even though the PR check was skipped for them.
+    if: >-
+      always() && (
+        github.event_name == 'push' ||
+        (needs.one-open-pr.result == 'success' && !github.event.pull_request.draft)
+      )
+    runs-on: ubuntu-latest
+    # One production deploy at a time; queued runs wait instead of cancelling the one in flight.
+    concurrency:
+      group: vercel-production
+      cancel-in-progress: false
+    env:
+      VERCEL_ORG_ID: team_TJykx4eeUkyWauU37QVrKeXv # jfkz0
+      VERCEL_PROJECT_ID: prj_sjilDSU7ewSVikiMyI267aatzq8e # cutthecheese-games
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Project-scoped tokens need a recent CLI.
+      - run: npm i -g vercel@latest
+
+      - name: Deploy
+        env:
+          SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::The VERCEL_TOKEN secret is not set. Add a project token for cutthecheese-games."
+            exit 1
+          fi
+          url=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN")
+          label="${SHA::7}${PR:+ from PR #$PR}"
+          echo "DEPLOY_URL=$url" >> "$GITHUB_ENV"
+          echo "BUILD_LABEL=$label" >> "$GITHUB_ENV"
+          {
+            echo "### Production: https://cutthecheese.games"
+            echo "Build: \`$label\`"
+            echo "Deployment: $url"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment on the pull request
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --edit-last --create-if-none \
+            --body "🚀 Deployed to production: https://cutthecheese.games (build \`${BUILD_LABEL}\`, [deployment](${DEPLOY_URL}))"

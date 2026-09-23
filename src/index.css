@@ -1,3 +1,521 @@
 @tailwind base;
-@tailwind components;
 @tailwind utilities;
+
+:root {
+  --ink: #230a1f;
+  --cheddar: #fde43d;
+  --rind: #f08a1c;
+  --crust: #9b5724;
+  --whisker: #a9a197;
+  --paper: #fef8e8;
+  --leaf: #5dbb4a;
+  --dawn: #f7a7a0;
+  /* One pixel of the chunky UI: every border and shadow is a multiple of it. */
+  --u: 4px;
+  --hud-h: 64px;
+  --display: 'Silkscreen', 'Pixelify Sans', monospace;
+  --body: 'Pixelify Sans', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--dawn); /* shows only before the canvas paints */
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.px {
+  image-rendering: pixelated;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: var(--u) solid var(--ink);
+  outline-offset: var(--u);
+}
+
+.skip {
+  position: fixed;
+  left: 16px;
+  top: -100px;
+  z-index: 50;
+  background: var(--cheddar);
+  color: var(--ink);
+  padding: 8px 16px;
+  font-weight: 600;
+}
+.skip:focus {
+  top: 16px;
+}
+
+/* A box with notched pixel corners: the border is four offset shadows, the drop shadow is hard-edged. */
+.px-box {
+  background: var(--paper);
+  box-shadow:
+    0 calc(var(--u) * -1) 0 0 var(--ink),
+    0 var(--u) 0 0 var(--ink),
+    calc(var(--u) * -1) 0 0 0 var(--ink),
+    var(--u) 0 0 0 var(--ink),
+    calc(var(--u) * 2) calc(var(--u) * 2) 0 0 rgb(35 10 31 / 0.35);
+}
+
+.world {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+/* ---- HUD ------------------------------------------------------------------------------------------- */
+
+.hud {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 20;
+  height: var(--hud-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  pointer-events: none;
+}
+.hud > * {
+  pointer-events: auto;
+}
+.hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--paper);
+  text-decoration: none;
+  font-family: var(--display);
+  font-size: 16px;
+  text-shadow:
+    2px 0 var(--ink),
+    -2px 0 var(--ink),
+    0 2px var(--ink),
+    0 -2px var(--ink),
+    2px 2px var(--ink);
+}
+.hud-brand img {
+  width: 42px;
+  height: 44px;
+}
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.hud-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 4px 10px;
+  font-family: var(--display);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.hud-crumbs img {
+  width: 30px;
+  height: 26px;
+}
+.hud-sound {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 40px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.hud-sound img {
+  width: 38px;
+  height: auto;
+}
+.hud-sound:active {
+  transform: translate(2px, 2px);
+}
+
+/* ---- Hero ------------------------------------------------------------------------------------------ */
+
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  position: relative;
+  z-index: 10;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 32px;
+  align-items: end;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: calc(var(--hud-h) + 6vh) 32px 0;
+}
+.hero-logo {
+  grid-row: span 2;
+  width: 190px;
+  height: auto;
+  filter: drop-shadow(8px 8px 0 rgb(35 10 31 / 0.35));
+}
+.wordmark {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 0.9;
+  color: var(--cheddar);
+  text-shadow:
+    4px 0 var(--ink),
+    -4px 0 var(--ink),
+    0 4px var(--ink),
+    0 -4px var(--ink),
+    4px 4px var(--ink),
+    -4px 4px var(--ink),
+    4px -4px var(--ink),
+    -4px -4px var(--ink),
+    8px 10px rgb(35 10 31 / 0.35);
+}
+.wordmark-small {
+  display: block;
+  font-size: 40px;
+  color: var(--paper);
+  margin-bottom: 12px;
+}
+.wordmark-big {
+  display: block;
+  font-size: clamp(64px, 11vw, 136px);
+  letter-spacing: 0.02em;
+}
+.hero-lede {
+  grid-column: 2;
+  max-width: 34ch;
+  margin: 28px 0 0;
+  padding: 14px 18px;
+  font-size: 20px;
+}
+.hero-hint {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-self: start;
+  max-width: 46ch;
+  margin: 36px 0 0;
+  padding: 8px 14px;
+  font-size: 16px;
+  background: var(--cheddar);
+}
+.hint-touch {
+  display: none;
+}
+@media (hover: none) and (pointer: coarse) {
+  .hint-keys {
+    display: none;
+  }
+  .hint-touch {
+    display: inline;
+  }
+}
+.hero-arrow {
+  width: 26px;
+  flex: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hint-touch {
+  display: none;
+}
+@media (hover: none) and (pointer: coarse) {
+  .hint-keys {
+    display: none;
+  }
+  .hint-touch {
+    display: inline;
+  }
+}
+.hero-arrow {
+    animation: nudge 1.2s steps(2) infinite;
+  }
+}
+@keyframes nudge {
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* ---- Stops ----------------------------------------------------------------------------------------- */
+
+.stop {
+  position: relative;
+  z-index: 10;
+  min-height: 115vh;
+}
+/* Dialogs sit in one fixed spot above the road; only the active stop's is visible. Inactive ones stay in the
+   document (for screen readers and Tab), and focusing one scrolls its stop into place. */
+.dialog {
+  position: fixed;
+  top: calc(var(--hud-h) + 3vh);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 20px;
+  width: min(calc(100% - 64px), 600px);
+  padding: 20px 22px;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-16px);
+}
+.is-active .dialog {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dialog {
+    transition:
+      opacity 160ms steps(3),
+      transform 160ms steps(3);
+  }
+}
+.stop-left .dialog {
+  left: max(32px, calc(50% - 540px));
+}
+.stop-right .dialog {
+  right: max(32px, calc(50% - 540px));
+}
+.dialog-icon {
+  width: 90px;
+  height: 90px;
+}
+.dialog-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1.1;
+}
+.dialog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+.chip {
+  padding: 1px 8px;
+  font-size: 15px;
+  background: #ece3d0;
+  box-shadow: inset 0 -2px 0 rgb(35 10 31 / 0.15);
+}
+.chip-live {
+  background: var(--leaf);
+}
+.chip-soon {
+  background: var(--cheddar);
+}
+.chip-dev {
+  background: var(--whisker);
+}
+.dialog-text {
+  margin: 12px 0 0;
+  max-width: 60ch;
+}
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin: 18px 0 4px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 6px 14px 8px;
+  color: var(--ink);
+  background: #ece3d0;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow:
+    0 -3px 0 0 var(--ink),
+    0 3px 0 0 var(--ink),
+    -3px 0 0 0 var(--ink),
+    3px 0 0 0 var(--ink),
+    inset 0 -4px 0 0 rgb(35 10 31 / 0.18);
+}
+.btn-primary {
+  background: var(--cheddar);
+  box-shadow:
+    0 -3px 0 0 var(--ink),
+    0 3px 0 0 var(--ink),
+    -3px 0 0 0 var(--ink),
+    3px 0 0 0 var(--ink),
+    inset 0 -4px 0 0 var(--rind);
+}
+.text-link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.text-link:hover {
+  text-decoration-color: var(--rind);
+}
+.btn:hover {
+  filter: brightness(1.06);
+}
+.btn:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 -3px 0 0 var(--ink),
+    0 3px 0 0 var(--ink),
+    -3px 0 0 0 var(--ink),
+    3px 0 0 0 var(--ink);
+}
+
+/* ---- Finale ---------------------------------------------------------------------------------------- */
+
+.finale {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+.finale-box {
+  display: block;
+  left: 50%;
+  margin-left: max(-300px, calc(-50% + 32px));
+}
+.link-btn {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.finale-legal {
+  margin-top: 18px;
+  font-size: 16px;
+}
+.finale-legal a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+.finale-copy {
+  margin: 12px 0 0;
+  font-size: 15px;
+  opacity: 0.75;
+}
+
+/* ---- Short screens: keep the dialog clear of the signposts ------------------------------------------ */
+
+@media (max-height: 820px) and (min-width: 721px) {
+  .dialog {
+    top: calc(var(--hud-h) + 1vh);
+    gap: 16px;
+    padding: 14px 18px;
+  }
+  .dialog-icon {
+    width: 60px;
+    height: 60px;
+  }
+  .dialog-title {
+    font-size: 24px;
+  }
+  .dialog-text {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+  .dialog-meta {
+    margin-top: 8px;
+  }
+  .dialog-actions {
+    margin-top: 12px;
+  }
+}
+
+/* ---- Small screens --------------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  :root {
+    --hud-h: 56px;
+  }
+  body {
+    font-size: 16px;
+  }
+  .hud-brand span {
+    display: none;
+  }
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr);
+    padding: calc(var(--hud-h) + 2vh) 16px 0;
+  }
+  .hero-logo {
+    grid-row: auto;
+    width: 88px;
+    margin-bottom: 16px;
+  }
+  .wordmark-small {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .wordmark-big {
+    font-size: min(56px, 12.5vw);
+  }
+  .hero-lede {
+    grid-column: 1;
+    font-size: 17px;
+    margin-top: 24px;
+  }
+  .hero-hint {
+    margin-top: 20px;
+  }
+  .stop-left .dialog,
+  .stop-right .dialog,
+  .finale-box {
+    left: 16px;
+    right: 16px;
+    margin: 0;
+    width: auto;
+  }
+  .dialog {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px;
+  }
+  .dialog-icon {
+    width: 60px;
+    height: 60px;
+  }
+  .dialog-title {
+    font-size: 22px;
+  }
+  .chip {
+    font-size: 14px;
+  }
+}

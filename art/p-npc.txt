@@ -1,0 +1,3 @@
+Save as raw/npc.png. Wide image, aspect 2:1. Grid: 4 columns x 2 rows (8 cells).
+Row 1: a chubbier cousin mouse (same style as the logo mouse but no knife, a little plumper, one with a tiny red scarf) sitting on its haunches eating a yellow cheese wedge held in both paws: 4 frames of nibbling (cheese to mouth, chewing cheeks puffed, crumbs falling, happy closed eyes).
+Row 2: a standalone yellow cheese wedge with holes (Swiss style, orange rind side) in 4 states: whole, one bite missing, half eaten, just a small crumb left.

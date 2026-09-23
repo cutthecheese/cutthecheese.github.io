@@ -1,0 +1,9 @@
+You are producing game art for the CutTheCheese games studio website. Use your image generation tool.
+STRICT STYLE RULES (these matter more than anything else):
+- Authentic 8-bit / NES-era pixel art, hard square pixels, NO anti-aliasing, NO gradients, NO blur, NO soft shadows, NO dithering noise.
+- Thick 1-pixel dark aubergine outline (#230A1F) around every shape, exactly like the attached CutTheCheese logo (a grey pixel mouse holding a knife over a yellow cheese block).
+- Limited palette only: aubergine #230A1F, cheddar yellow #FDE43D, rind orange #F08A1C, crust brown #9B5724, mouse grey #A9A197, light grey #D8D2C8, pink #F2A0A8, cream #FEF8E8, white #FFFFFF, sky blue #5BB8F0, red #E0413A, green #5DBB4A, dark green #2E7D3A, purple #7A4FA0. Add no other colours.
+- Background of the whole image must be flat pure magenta #FF00FF (it is chroma-keyed out later). No ground, no scenery, no text, no labels, no grid lines, no borders.
+- Sprite sheet layout: an exact grid of equal cells, as specified below, every sprite centered horizontally in its cell and standing on the same baseline near the bottom of its cell, generous magenta margin between sprites so they never touch.
+- Side view, facing RIGHT, unless told otherwise.
+After generating, save the final image as the PNG path given below inside the current working directory (copy it from wherever the tool stored it), and verify the file exists. Do not write any code or other files.
