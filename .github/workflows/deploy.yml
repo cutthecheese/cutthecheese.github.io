@@ -5,6 +5,9 @@ name: Deploy to Vercel
 #   - every ready (non-draft) pull request: when opened, on new commits, when reopened or marked ready.
 # Only one pull request may be open at a time. A second one fails the "One open PR" check and is never
 # deployed. Dependabot's pull requests don't count towards that and are not deployed either.
+#
+# The only secret is VERCEL_TOKEN: a project token, scoped to the cutthecheese-games project alone
+# (Vercel → Account Settings → Tokens → scope: project). The team and project IDs below are not secret.
 on:
   push:
     branches: [main]
@@ -52,8 +55,9 @@ jobs:
       group: vercel-production
       cancel-in-progress: false
     env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: team_TJykx4eeUkyWauU37QVrKeXv # jfkz0
+      VERCEL_PROJECT_ID: prj_sjilDSU7ewSVikiMyI267aatzq8e # cutthecheese-games
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -62,6 +66,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # Project-scoped tokens need a recent CLI.
       - run: npm i -g vercel@latest
 
       - name: Deploy
@@ -69,7 +74,11 @@ jobs:
           SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           PR: ${{ github.event.pull_request.number }}
         run: |
-          url=$(vercel deploy --prod --yes --token="${{ secrets.VERCEL_TOKEN }}")
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::The VERCEL_TOKEN secret is not set. Add a project token for cutthecheese-games."
+            exit 1
+          fi
+          url=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN")
           label="${SHA::7}${PR:+ from PR #$PR}"
           echo "DEPLOY_URL=$url" >> "$GITHUB_ENV"
           echo "BUILD_LABEL=$label" >> "$GITHUB_ENV"
