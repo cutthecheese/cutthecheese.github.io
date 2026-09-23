@@ -67,9 +67,12 @@ interface Stop {
   wedge: number;
   hiT: number;
 }
+/** 0 is the near lane (cars drive left), 1 the far lane (cars drive right). */
+type Lane = 0 | 1;
+
 interface Car {
   x: number;
-  lane: 0 | 1;
+  lane: Lane;
   kind: number;
   v: number;
   honked: boolean;
@@ -77,6 +80,7 @@ interface Car {
 interface Crumb {
   id: number;
   x: number;
+  lane: Lane;
   h: number;
   got: boolean;
 }
@@ -124,6 +128,9 @@ export class Game {
   private got = new Set<number>();
   private bodySky = '';
   private player = {
+    lane: 0 as Lane,
+    /** Where the mouse is drawn between the lanes, 0..1; it slides towards `lane`. */
+    laneT: 0,
     h: 0,
     vy: 0,
     facing: 1,
@@ -199,7 +206,21 @@ export class Game {
     sfx.jump();
   }
 
-  /** A click or tap on the scene: greet a mouse if one was hit, otherwise jump. */
+  /** Moves the mouse one lane up (+1, away from the viewer) or down (-1). */
+  lane(dir: 1 | -1): void {
+    const p = this.player;
+    if (p.squash > 0 || p.cut >= 0) return;
+    const next = Math.max(0, Math.min(1, p.lane + dir)) as Lane;
+    if (next === p.lane) return;
+    p.lane = next;
+    if (this.opts.reducedMotion) p.laneT = next;
+    sfx.lane();
+  }
+
+  /**
+   * A click or tap on the scene: greet a mouse if one was hit; on the road, tapping the other lane moves
+   * there and tapping your own lane jumps; anywhere else jumps.
+   */
   pointer(clientX: number, clientY: number): void {
     const x = clientX / this.S + this.camX;
     const y = clientY / this.S;
@@ -214,6 +235,10 @@ export class Game {
         sfx.hi();
         return;
       }
+    }
+    if (y > this.roadTop - 20 && y < this.groundY + 6) {
+      const tapped: Lane = y < this.laneSplit ? 1 : 0;
+      if (tapped !== this.player.lane) return this.lane(tapped === 1 ? 1 : -1);
     }
     this.jump();
   }
@@ -259,10 +284,18 @@ export class Game {
     return this.H - 12; // near lane, where the player runs
   }
   private get farLaneY() {
-    return this.groundY - 17;
+    return this.groundY - 23;
+  }
+  /** Feet position of a lane. */
+  private laneFeet(l: number) {
+    return this.groundY + (this.farLaneY - this.groundY) * l;
+  }
+  /** Taps above this line (in canvas pixels) are on the far lane. Sprites stand up from their feet. */
+  private get laneSplit() {
+    return this.farLaneY + 4;
   }
   private get roadTop() {
-    return this.farLaneY - 9;
+    return this.farLaneY - 11;
   }
   private get propsFeet() {
     return this.roadTop - 2;
@@ -283,10 +316,13 @@ export class Game {
     const to = this.endX - 40;
     this.crumbs = Array.from({ length: CRUMB_COUNT }, (_, id) => {
       const k = id % 5;
+      const lane = (rand(id, 40) < 0.5 ? 0 : 1) as Lane;
       return {
         id,
         x: Math.round(from + ((to - from) * id) / (CRUMB_COUNT - 1)),
-        h: k < 2 ? 6 : k === 3 ? 30 : 20,
+        lane,
+        // Far-lane crumbs float lower so they don't hang in front of the signposts.
+        h: k < 2 ? 6 : lane === 1 ? 18 : k === 3 ? 30 : 20,
         got: this.got.has(id),
       };
     });
@@ -342,7 +378,7 @@ export class Game {
     }
     if (p.idle > 6 && !p.snacked && p.h === 0) {
       p.snacked = true;
-      this.say('snack break', this.playerX, this.groundY - 34);
+      this.say('snack break', this.playerX, this.laneFeet(p.laneT) - 34);
     }
 
     // Jump physics.
@@ -354,6 +390,10 @@ export class Game {
         p.vy = 0;
       }
     }
+    // Slide between lanes in a quick hop.
+    p.laneT += Math.sign(p.lane - p.laneT) * Math.min(Math.abs(p.lane - p.laneT), dt * 7);
+    const onLane: Lane = p.laneT > 0.5 ? 1 : 0;
+    const feet = this.laneFeet(p.laneT);
     p.squash = Math.max(0, p.squash - dt);
     p.safe = Math.max(0, p.safe - dt);
     p.wave = Math.max(0, p.wave - dt);
@@ -373,10 +413,11 @@ export class Game {
       if (before < 2 && now >= 2) {
         sfx.chop();
         const bx = this.playerX + 13;
+        const groundY = feet;
         for (let i = 0; i < 8; i++)
-          this.parts.push({ x: bx, y: this.groundY - 14, vx: Math.cos(i) * 60, vy: -40 - rand(i) * 60, t: 0.9, kind: 'crumb' });
-        this.parts.push({ x: bx, y: this.groundY - 4, vx: 0, vy: 0, t: 0.35, kind: 'star' });
-        this.say('CUT!', bx, this.groundY - 40);
+          this.parts.push({ x: bx, y: groundY - 14, vx: Math.cos(i) * 60, vy: -40 - rand(i) * 60, t: 0.9, kind: 'crumb' });
+        this.parts.push({ x: bx, y: groundY - 4, vx: 0, vy: 0, t: 0.35, kind: 'star' });
+        this.say('CUT!', bx, groundY - 40);
       }
       if (!atEnd) p.cut = -1;
     }
@@ -399,19 +440,20 @@ export class Game {
     const px = this.playerX;
     for (const c of this.cars) {
       c.x += c.v * dt;
-      if (c.lane !== 0) continue;
-      const rel = c.x - px;
-      if (!c.honked && rel > 0 && rel < 70 && p.h === 0) {
+      if (c.lane !== onLane) continue;
+      // Distance still to cover before the car reaches the mouse (cars in each lane drive their own way).
+      const ahead = c.v < 0 ? c.x - px : px - c.x;
+      if (!c.honked && ahead > 0 && ahead < 70 && p.h === 0) {
         c.honked = true;
-        this.say('BEEP!', c.x, this.groundY - 30);
+        this.say('BEEP!', c.x, feet - 30);
         sfx.honk();
       }
-      if (Math.abs(rel) < 20 && p.h < 12 && p.squash === 0 && p.safe === 0 && p.cut < 0) {
+      if (Math.abs(c.x - px) < 20 && p.h < 12 && p.squash === 0 && p.safe === 0 && p.cut < 0) {
         p.squash = 1.1;
         p.safe = 2.4;
         p.h = 0;
         p.vy = 0;
-        this.say('SQUEAK!', px, this.groundY - 24);
+        this.say('SQUEAK!', px, feet - 24);
         sfx.squeak();
       }
     }
@@ -424,11 +466,11 @@ export class Game {
     const hi = Math.max(px, px - moved) + 9;
     for (const c of this.crumbs) {
       if (!(running || p.h > 0) || c.got || c.x < lo || c.x > hi) continue;
-      if (Math.abs(c.h - (p.h + 10)) < 13 && p.squash === 0) {
+      if (c.lane === onLane && Math.abs(c.h - (p.h + 10)) < 13 && p.squash === 0) {
         c.got = true;
         this.got.add(c.id);
         sfx.crumb();
-        this.parts.push({ x: c.x, y: this.groundY - c.h, vx: 0, vy: -30, t: 0.4, kind: 'sparkle' });
+        this.parts.push({ x: c.x, y: this.laneFeet(c.lane) - c.h, vx: 0, vy: -30, t: 0.4, kind: 'sparkle' });
         this.save();
       }
     }
@@ -547,11 +589,14 @@ export class Game {
     g.clearRect(0, 0, W, H);
     this.road(g);
     this.stopsLayer(g);
-    this.carsLayer(g, 1);
-    this.crumbLayer(g);
     this.finale(g);
+    const inFar = this.player.laneT > 0.5;
+    this.crumbLayer(g, 1);
+    this.carsLayer(g, 1);
+    if (inFar) this.playerLayer(g);
+    this.crumbLayer(g, 0);
     this.carsLayer(g, 0);
-    this.playerLayer(g);
+    if (!inFar) this.playerLayer(g);
     this.particles(g);
     this.foreground(g);
     night(() => this.lamps(g, true));
@@ -724,7 +769,7 @@ export class Game {
     }
   }
 
-  private carsLayer(c: CanvasRenderingContext2D, lane: 0 | 1) {
+  private carsLayer(c: CanvasRenderingContext2D, lane: Lane) {
     for (const car of this.cars) {
       if (car.lane !== lane) continue;
       const wheel = Math.floor(this.time * 8) % 2;
@@ -733,13 +778,13 @@ export class Game {
     }
   }
 
-  private crumbLayer(c: CanvasRenderingContext2D) {
+  private crumbLayer(c: CanvasRenderingContext2D, lane: Lane) {
     for (const cr of this.crumbs) {
-      if (cr.got) continue;
+      if (cr.got || cr.lane !== lane) continue;
       const x = cr.x - this.camX;
       if (x < -10 || x > this.W + 10) continue;
       const bob = this.opts.reducedMotion ? 0 : Math.round(Math.sin(this.time * 4 + cr.id) * 1.5);
-      drawSprite(c, 'props', P.crumb, x, this.groundY - cr.h + 5 + bob);
+      drawSprite(c, 'props', P.crumb, x, this.laneFeet(lane) - cr.h + 5 + bob);
     }
   }
 
@@ -753,7 +798,7 @@ export class Game {
   private playerLayer(c: CanvasRenderingContext2D) {
     const p = this.player;
     const x = this.playerX - this.camX;
-    const y = this.groundY - Math.round(p.h);
+    const y = Math.round(this.laneFeet(p.laneT) - p.h);
     if (p.safe > 0 && p.squash === 0 && Math.floor(this.time * 12) % 2) return; // blink while invulnerable
     let f: number;
     if (p.squash > 0) f = M.squash;

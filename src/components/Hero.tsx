@@ -12,7 +12,13 @@ export function Hero({ count }: { count: number }) {
           who lives on your wrist.
         </p>
         <p className="hero-hint px-box">
-          Scroll to walk the road. Press space or tap the road to jump, and grab the crumbs.
+          <span className="hint-keys">
+            Scroll or hold A/D (←/→) to walk. W/S (↑/↓) switches lanes and Space jumps. Grab the crumbs and
+            dodge the cars.
+          </span>
+          <span className="hint-touch">
+            Scroll to walk. Tap the other lane to cross the road, or tap your own lane to jump.
+          </span>
           <img src="/sprites/ui-arrow.png" alt="" className="px hero-arrow" />
         </p>
       </div>

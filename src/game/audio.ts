@@ -25,6 +25,7 @@ function tone(type: OscillatorType, from: number, to: number, dur: number, vol =
 
 export const sfx = {
   jump: () => tone('square', 260, 620, 0.16),
+  lane: () => tone('square', 440, 520, 0.06, 0.05),
   crumb: () => {
     tone('square', 880, 880, 0.06, 0.06);
     tone('square', 1320, 1320, 0.1, 0.06, 0.06);
