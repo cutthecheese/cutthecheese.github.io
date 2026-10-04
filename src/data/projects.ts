@@ -15,7 +15,7 @@ export interface Project {
   statusNote?: string;
   description: string;
   links: ProjectLink[];
-  /** Cell in public/sprites/icons.png (0-7). */
+  /** Cell in public/sprites/icons.png (0-8). */
   icon: number;
 }
 
@@ -48,8 +48,25 @@ export const projects: Project[] = [
     statusNote: 'updated weekly',
     description:
       'A blacksmith dice roguelite. Turn raw blanks into orders while the forge keeps getting hotter, then survive a year of four seasons that each end with a big guild order.',
-    links: [{ label: 'Play in your browser', href: 'https://forge.cutthecheese.games', primary: true }],
+    links: [
+      { label: 'Play in your browser', href: 'https://forge.cutthecheese.games', primary: true },
+      { label: 'itch.io', href: 'https://yetanothermike.itch.io/heat-and-hammer' },
+    ],
     icon: 1,
+  },
+  {
+    slug: 'draw-me-a-river',
+    title: 'Draw Me a River',
+    platform: 'Browser',
+    status: 'live',
+    statusNote: 'new',
+    description:
+      'Draw a creature, and an AI works out its skeleton and teaches it to walk, roll or wriggle. Then physics decides whether it makes it across. Eleven puzzle levels full of axes, hammers and floating logs, plus a level designer.',
+    links: [
+      { label: 'Draw a creature', href: 'https://draw-me-a-river.vercel.app', primary: true },
+      { label: 'itch.io', href: 'https://yetanothermike.itch.io/draw-me-a-river' },
+    ],
+    icon: 8,
   },
   {
     slug: 'vesper',
@@ -79,22 +96,22 @@ export const projects: Project[] = [
     title: 'PixelFight',
     platform: 'Browser',
     status: 'live',
-    // pixelfight.lol answered HTTP 500 on 2026-09-23; put the link back once it's up.
-    statusNote: 'back soon',
     description:
       'A pixel-art fight pit that never closes. The thirty highest bids hold the floor. Outbid someone to take the controls, and your fighter carries your project’s icon over its head.',
-    links: [],
+    links: [{ label: 'Enter the pit', href: 'https://pixelfight.lol', primary: true }],
     icon: 4,
   },
   {
     slug: 'tiny-world',
     title: 'Tiny World',
-    platform: 'Browser',
+    platform: 'Browser, multiplayer',
     status: 'live',
     description:
-      'A comic-book planet small enough to hold in one hand. Traffic, boats and planes go about their day and bump into each other. Drag to spin it, and double-click anything to follow it around.',
-    // GitHub Pages hasn't issued the HTTPS certificate yet; http redirects to https once it has.
-    links: [{ label: 'Spin the planet', href: 'http://tiny-world.cutthecheese.games', primary: true }],
+      'A comic-book planet you share with strangers. Hop on a bus, a plane, a boat or a hot-air balloon and talk to everyone from the window, or type a wish and the whole planet gets it, from rain to rush hour. Every 15 minutes it is rebuilt and everybody falls off.',
+    links: [
+      { label: 'Visit the planet', href: 'https://tiny-world.cutthecheese.games', primary: true },
+      { label: 'itch.io', href: 'https://yetanothermike.itch.io/tiny-world' },
+    ],
     icon: 5,
   },
   {

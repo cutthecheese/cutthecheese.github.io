@@ -35,6 +35,10 @@ SHEETS = {
     'icons': (4, 2),
 }
 ICON_SLUGS = ['sixseven', 'heat-and-hammer', 'vesper', 'pete', 'pixelfight', 'tiny-world', 'little-planet', 'brush-the-cat']
+# Icons added after the Codex sheet, drawn by hand as character grids in art/pixel/<slug>.txt.
+# They are appended to the icons sheet in this order (cells 8, 9, ...).
+PIXEL_ICONS = ['draw-me-a-river']
+PIXEL_PALETTE = {'O': '#230A1F', 'C': '#FEF8E8', 'g': '#D8D2C8', 'B': '#5BB8F0', 'W': '#9B5724', 'w': '#FFFFFF'}
 UI = {'sound-on': 12, 'sound-off': 13, 'cheese': 14, 'arrow': 15}
 
 
@@ -133,6 +137,19 @@ def components(im):
     return comps
 
 
+def pixel_icon(slug):
+    """Read a hand-drawn icon: one character per pixel, '.' is transparent, the rest map via PIXEL_PALETTE."""
+    with open(os.path.join(ROOT, 'art', 'pixel', slug + '.txt')) as fh:
+        rows = [r for r in fh.read().splitlines() if r]
+    im = Image.new('RGBA', (len(rows[0]), len(rows)), (0, 0, 0, 0))
+    for y, row in enumerate(rows):
+        for x, ch in enumerate(row):
+            if ch != '.':
+                c = PIXEL_PALETTE[ch]
+                im.putpixel((x, y), (int(c[1:3], 16), int(c[3:5], 16), int(c[5:7], 16), 255))
+    return im
+
+
 def cut_cells(im, cols, rows):
     """Split the sheet into its grid cells. A shape belongs to the cell holding its centre, so a sprite that
     pokes out of its cell (a taxi's roof sign) stays whole and never leaks into the neighbour."""
@@ -188,6 +205,12 @@ def main():
                 continue
             frames.append({'dx': off[0], 'dy': off[1], 'w': sprite.width, 'h': sprite.height})
             packed.append(sprite)
+        if name == 'icons':
+            # Anchor hand-drawn icons like the generated ones: bottom centre of the cell.
+            for slug in PIXEL_ICONS:
+                sprite = pixel_icon(slug)
+                frames.append({'dx': -(sprite.width // 2), 'dy': -sprite.height, 'w': sprite.width, 'h': sprite.height})
+                packed.append(sprite)
         # Pack the trimmed frames into one row with a 1px gap.
         width = sum(s.width + 1 for s in packed if s) or 1
         height = max((s.height for s in packed if s), default=1)
@@ -204,7 +227,7 @@ def main():
         atlas['frames'][name] = frames
 
         if name == 'icons':
-            for slug, s in zip(ICON_SLUGS, packed):
+            for slug, s in zip(ICON_SLUGS + PIXEL_ICONS, packed):
                 s.save(os.path.join(OUT, 'projects', slug + '.png'), optimize=True)
         if name == 'props':
             for ui, i in UI.items():

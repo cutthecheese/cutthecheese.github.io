@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Vesper — Support | CutTheCheese Games</title>
-    <meta name="description" content="Support for Vesper, a watchOS alarm clock with a small bat in it: how the alarm works, why it sometimes asks to be reopened, and what she needs permission for." />
+    <meta name="description" content="Support for Vesper, an Apple Watch alarm clock with a small bat in it, and her iPhone Home Screen widget: how the alarm works, keeping her on screen, the widget, languages, and permissions." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/vesper/page.css" />
   </head>
@@ -17,6 +17,7 @@
       <nav class="site-nav">
         <a href="/vesper/support">Support</a>
         <a href="/vesper/privacy">Privacy</a>
+        <a href="#ru" lang="ru">По-русски</a>
       </nav>
     </header>
 
@@ -30,11 +31,34 @@
 
       <h2>Setting the alarm</h2>
       <ul>
-        <li>Swipe to the <strong>Alarm</strong> screen and turn on <em>Wake me</em>.</li>
+        <li>On your Apple Watch, swipe to the <strong>Alarm</strong> screen and turn on <em>Wake me</em>.</li>
         <li>Set a time, and optionally the days it should repeat. No days selected means every day.</li>
         <li>When it goes off she flaps and shrieks, and the haptics get sharper the longer you ignore her.</li>
         <li><strong>Snooze</strong> buys you a few minutes and she counts it. <strong>Up</strong> ends it and extends your streak.</li>
       </ul>
+
+      <h2>Keeping her on screen</h2>
+      <ul>
+        <li>On the watch, open <em>Settings → General → Return to Clock</em>, choose <strong>Vesper</strong> and turn on <em>Return to App</em>. She then stays on screen for up to an hour after you lower your wrist.</li>
+        <li>With your wrist down she falls asleep on the Always-On screen and turns over once a minute.</li>
+        <li>Add her to your watch face or the Smart Stack (turn the Digital Crown on the face): she is up to something new every twenty minutes, and shows when she will wake you.</li>
+      </ul>
+
+      <h2>The iPhone widget</h2>
+      <p>
+        On iPhone she lives only in a Home Screen widget. The iPhone app is just
+        the widget's settings.
+      </p>
+      <ol>
+        <li>Touch and hold an empty spot on the Home Screen until the apps jiggle.</li>
+        <li>Tap <em>Edit</em>, then <em>Add Widget</em>, and find <strong>Vesper</strong>.</li>
+        <li>Pick a size — small, medium or large. Tap her and she answers with a new line.</li>
+      </ol>
+      <p>
+        In the Vesper app on your iPhone you can choose how bleak her lines may
+        get, how often the picture changes (10 to 60 minutes), and whether she
+        shows her lines at all.
+      </p>
 
       <h2>Common questions</h2>
       <dl>
@@ -57,24 +81,38 @@
 
         <dt>She has nothing to say about my activity.</dt>
         <dd>
-          She needs Health permission. Go to <em>Settings</em> inside the app and
-          tap <em>Grant permissions</em>. Without it she still works, but she is
-          limited to remarks about the hour and your snoozing habits.
+          She needs Health permission on the watch. Go to <em>Settings</em> inside
+          the watch app and tap <em>Grant permissions</em>. Without it she still
+          works, but she is limited to remarks about the hour and your snoozing
+          habits. The iPhone widget never reads Health; its lines are about the
+          time of day.
         </dd>
 
         <dt>Can I make her nicer, or worse?</dt>
         <dd>
-          Yes. <em>Settings → Tone</em> has three levels. <strong>Gentle</strong>
-          is fond and worried about you. <strong>Melancholy</strong> is the
-          default. <strong>Bleak</strong> does not soften anything.
+          Yes. On the watch, <em>Settings → Tone</em>; for the widget, the Vesper
+          app on your iPhone. <strong>Gentle</strong> is fond and worried about
+          you. <strong>Melancholy</strong> is the default. <strong>Bleak</strong>
+          does not soften anything.
+        </dd>
+
+        <dt>Does she speak Russian?</dt>
+        <dd>
+          Yes — English and Russian. She follows your device's language: on the
+          watch, set it in the Watch app on your iPhone (<em>General → Language
+          &amp; Region</em>); on iPhone you can also pick a language just for
+          Vesper in <em>Settings → Vesper → Language</em>.
         </dd>
 
         <dt>Does she need my iPhone?</dt>
-        <dd>No. Vesper is a standalone watchOS app and runs entirely on the watch.</dd>
+        <dd>
+          No. The alarm, her remarks and Health all run on the watch. The iPhone
+          app is only there for the Home Screen widget.
+        </dd>
 
         <dt>Where does my health data go?</dt>
         <dd>
-          Nowhere. The app has no networking code at all. See the
+          Nowhere. Vesper has no networking code at all. See the
           <a href="/vesper/privacy">privacy policy</a>.
         </dd>
       </dl>
@@ -84,6 +122,62 @@
         Anything else, or a bug worth telling us about:
         <a href="mailto:support@cutthecheese.games">support@cutthecheese.games</a>.
       </p>
+
+      <section id="ru" lang="ru">
+        <h2>По-русски</h2>
+        <p>
+          Vesper — маленькая летучая мышь на Apple Watch. Она живёт в обратном
+          тебе режиме: всю ночь не спит, а перед тем как уснуть на рассвете,
+          будит тебя.
+        </p>
+        <dl>
+          <dt>Как поставить будильник</dt>
+          <dd>
+            На часах смахни к экрану <strong>«Будильник»</strong>, включи
+            <em>«Будить меня»</em>, выбери время и дни. Если дни не выбраны —
+            каждый день. <strong>«Отложить»</strong> даёт несколько минут, и она
+            их считает. <strong>«Встаю»</strong> выключает будильник.
+          </dd>
+
+          <dt>Почему написано «открой меня ещё раз до этого»</dt>
+          <dd>
+            watchOS разрешает ставить будильник не дальше чем на 36 часов вперёд
+            и только пока приложение открыто. Открой Vesper в пределах 36 часов
+            до будильника — и она заведётся. Уведомление придёт в любом случае.
+          </dd>
+
+          <dt>Как держать её на экране</dt>
+          <dd>
+            На часах: <em>«Настройки» → «Основные» → «Возврат к циферблату» →
+            Vesper → «Вернуться к приложению»</em>. Когда опускаешь руку, она
+            засыпает на экране «Всегда включён». Её можно добавить на циферблат и
+            в «Смарт-стопку».
+          </dd>
+
+          <dt>Виджет на iPhone</dt>
+          <dd>
+            Нажми и подержи пустое место на экране «Домой», нажми «Править» →
+            «Добавить виджет» и найди Vesper. Нажми на неё — она ответит.
+            В приложении Vesper на iPhone можно выбрать тон, как часто меняется
+            картинка и показывать ли её реплики.
+          </dd>
+
+          <dt>Язык</dt>
+          <dd>
+            Vesper говорит по-русски и по-английски и следует языку устройства.
+            Для часов язык меняется в приложении Watch на iPhone, а на iPhone его
+            можно выбрать отдельно для Vesper: <em>«Настройки» → Vesper →
+            «Язык»</em>.
+          </dd>
+
+          <dt>Данные</dt>
+          <dd>
+            В Vesper нет сетевого кода: данные о здоровье никуда не уходят.
+            Подробнее — в <a href="/vesper/privacy">политике конфиденциальности</a>.
+            Вопросы: <a href="mailto:support@cutthecheese.games">support@cutthecheese.games</a>.
+          </dd>
+        </dl>
+      </section>
 
       <p class="footnote">
         See also the <a href="/vesper/privacy">privacy policy</a>.
