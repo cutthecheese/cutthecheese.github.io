@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Talking Heads — Privacy Policy | CutTheCheese Games</title>
+    <meta name="description" content="Privacy policy for Talking Heads, a Mac app that turns speech into live speech bubbles: all audio is transcribed on your Mac and never recorded or sent anywhere." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/talkingheads/page.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark">💬</span>
+        <span class="brand-name">CutTheCheese</span>
+      </a>
+      <nav class="site-nav">
+        <a href="/talkingheads/support">Support</a>
+        <a href="/talkingheads/privacy">Privacy</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Talking Heads — Privacy Policy</h1>
+      <p class="lead">
+        Effective October 4, 2026. Talking Heads is a Mac app that listens to
+        what your Mac plays and, if you turn it on, to your microphone, and
+        shows the words as speech bubbles over little animated heads.
+      </p>
+
+      <h2>The short version</h2>
+      <p>
+        <strong>Everything you hear and say is turned into text on your Mac.</strong>
+        Talking Heads does not record audio, does not keep transcripts, and does
+        not send audio or text anywhere. There is no account, no server, no
+        analytics, no advertising and no tracking.
+      </p>
+
+      <h2>What Talking Heads listens to</h2>
+      <ul>
+        <li>
+          <strong>What your Mac plays</strong> (videos, calls, music), with the
+          macOS <em>System Audio Recording</em> permission.
+        </li>
+        <li>
+          <strong>Your microphone</strong>, only if you turn it on in the menu
+          (it is off by default), with the macOS <em>Microphone</em> permission.
+        </li>
+      </ul>
+      <p>
+        The sound is kept in memory for the few seconds it takes to recognize
+        a phrase, then discarded. Nothing is written to disk.
+      </p>
+
+      <h2>What happens on your Mac</h2>
+      <ul>
+        <li>Speech recognition (NVIDIA Parakeet or OpenAI Whisper models, run on your Mac).</li>
+        <li>Telling voices apart, and whether a voice sounds like a man or a woman, from the sound of the voice. These voice profiles live in memory only and are forgotten after a few minutes of silence or when the app quits.</li>
+        <li>Translation, if you turn it on, with Apple's on-device Translation framework.</li>
+        <li>Reading the emotion of a phrase from its words, if you turn it on.</li>
+      </ul>
+
+      <h2>What goes over the network</h2>
+      <p>
+        On first use the app downloads its speech and voice models (about
+        700 MB) from Hugging Face, a public model host. These are plain
+        downloads of model files: no audio, text or personal information is
+        sent. Hugging Face, like any website, sees the request coming from your
+        internet address.
+      </p>
+      <p>
+        If you choose <em>Apple Speech</em> as the recognizer, recognition is
+        done by Apple's speech service. Where your Mac can do this on the device
+        it does; for some languages macOS may send audio to Apple, under
+        <a href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>.
+        The default recognizer runs entirely on your Mac. If you turn on
+        translation, macOS may download language files from Apple.
+      </p>
+
+      <h2>What Talking Heads stores</h2>
+      <p>On your Mac only, in the app's own container:</p>
+      <ul>
+        <li>Your settings: which sources to listen to, languages, recognizer, avatar size, display options.</li>
+        <li>The downloaded models.</li>
+      </ul>
+      <p>Deleting the app deletes all of it.</p>
+
+      <h2>Children</h2>
+      <p>
+        Talking Heads collects no personal information from anyone, including
+        children.
+      </p>
+
+      <h2>Changes and contact</h2>
+      <p>
+        If this policy changes, the new version will be posted on this page
+        with a new effective date. Questions:
+        <a href="mailto:support@cutthecheese.games">support@cutthecheese.games</a>.
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 CutTheCheese Games. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
